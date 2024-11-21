@@ -1,3 +1,3 @@
-export class creationClasseParReflection {
+export function creationClasseParReflection() {
     
 }
