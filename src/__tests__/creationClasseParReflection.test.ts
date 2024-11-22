@@ -1,18 +1,25 @@
 import {creationClasseParReflection} from '../creationClasseParReflection';
 
-class TestClass {
-  
-}
-
 describe('createClassInstance', () => {
-  it('should create an instance of the class specified by the environment variable', () => {
-    // Simuler une variable d'environnement
-    process.env.CLASS_NAME = 'TestClass';
+  it("devrait créer une instance de ExampleClass", () => {
+    process.env.CLASS_NAME = "ExampleClass";
+    const instance = creationClasseParReflection.createClassInstance();
 
-    // Appel de la fonction pour créer une instance
-    const instance = creationClasseParReflection();
+    expect(instance).toBeDefined();
+    expect((instance as any).name).toBe("ExampleClass");
+  });
 
-    // Vérifier que l'instance est bien de la classe souhaitée
-    expect(instance).toBeInstanceOf(TestClass);
+  test("devrait lever une erreur si CLASS_NAME est manquant", () => {
+    process.env.CLASS_NAME = "";
+    expect(() => creationClasseParReflection.createClassInstance()).toThrow(
+      "La variable d'environnement CLASS_NAME n'est pas définie."
+    );
+  });
+
+  test("devrait lever une erreur si la classe est introuvable", () => {
+    process.env.CLASS_NAME = "NonExistentClass";
+    expect(() => creationClasseParReflection.createClassInstance()).toThrow(
+      "Classe 'NonExistentClass' non trouvée."
+    );
   });
 });
